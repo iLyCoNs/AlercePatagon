@@ -94,10 +94,9 @@
     border-bottom:1px solid var(--border);
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:1.4rem;font-weight:600;letter-spacing:.5px}
-  .brand-badge{background:rgba(255,255,255,0.92);padding:4px 10px;border-radius:10px;display:flex;align-items:center;justify-content:center}
-  .brand img{height:34px;width:auto;object-fit:contain}
-  .brand span{color:var(--emerald)}
+  .brand{display:flex;align-items:center;text-decoration:none}
+  .brand-logo{height:46px;width:auto;max-width:240px;object-fit:contain;transition:transform .2s ease, opacity .2s ease}
+  .brand-logo:hover{transform:scale(1.02);opacity:.95}
   .nav-links{display:flex;gap:28px;font-size:.92rem;color:var(--muted)}
   .nav-links a:hover{color:var(--text)}
   .nav-cta{
@@ -400,12 +399,9 @@
 <!-- ===================== NAV ===================== -->
 <nav>
   <div class="wrap nav-inner">
-    <div class="brand">
-      <div class="brand-badge">
-        <img src="logo.png" alt="Alerce Patagón Logo">
-      </div>
-      Alerce <span>Patagón</span>
-    </div>
+    <a href="#inicio" class="brand" aria-label="Alerce Patagón">
+      <img src="logo.png" alt="Alerce Patagón Logo" class="brand-logo">
+    </a>
     <div class="nav-links">
       <a href="#ubicacion">Ubicación</a>
       <a href="#naturaleza">Naturaleza</a>
@@ -779,12 +775,9 @@
 <!-- ===================== FOOTER ===================== -->
 <footer>
   <div class="wrap foot-inner">
-    <div class="brand" style="font-size:1.2rem">
-      <div class="brand-badge" style="padding:2px 8px">
-        <img src="logo.png" alt="Alerce Patagón Logo" style="height:26px">
-      </div>
-      Alerce <span style="color:var(--emerald)">Patagón</span>
-    </div>
+    <a href="#inicio" class="brand" aria-label="Alerce Patagón">
+      <img src="logo.png" alt="Alerce Patagón Logo" class="brand-logo" style="height:38px;">
+    </a>
     <div class="legal-tags">
       <span>D.L. N° 3.516</span><span>Certificación SAG</span><span>Normativa CONAF</span>
     </div>
