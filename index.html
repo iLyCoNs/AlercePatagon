@@ -327,25 +327,29 @@
   .qa .a a{color:var(--teal);text-decoration:underline}
 
   /* ---------- FORMULARIO DE CONTACTO (formulario-contacto-alerce-patagon_1) ---------- */
-  .contact-wrap{max-width:640px;margin:0 auto}
+  .contact-wrap{max-width:640px;margin:0 auto;width:100%;box-sizing:border-box}
   .contact-card{
     background:var(--panel);
     border:1px solid var(--field-border);
     border-radius:20px;
     padding:32px;
     text-align:left;
+    width:100%;
+    box-sizing:border-box;
+    overflow:hidden;
   }
-  form.custom-form{display:flex;flex-direction:column;gap:20px}
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media(max-width:520px){.form-row{grid-template-columns:1fr}}
-  .form-group{display:flex;flex-direction:column;gap:8px}
+  form.custom-form{display:flex;flex-direction:column;gap:20px;width:100%;box-sizing:border-box}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;min-width:0;box-sizing:border-box}
+  @media(max-width:560px){.form-row{grid-template-columns:1fr}}
+  .form-group{display:flex;flex-direction:column;gap:8px;width:100%;min-width:0;box-sizing:border-box}
   .form-group label{font-size:.9rem;font-weight:600;color:var(--text)}
   .form-group label .req{color:var(--req);margin-left:2px}
 
   .field{
     position:relative;display:flex;align-items:center;
+    width:100%;min-width:0;box-sizing:border-box;
     background:var(--field);border:1px solid var(--field-border);
-    border-radius:var(--radius);
+    border-radius:var(--radius);overflow:hidden;
     transition:border-color .18s ease, box-shadow .18s ease;
   }
   .field:focus-within{
@@ -357,7 +361,8 @@
     width:44px;color:var(--muted);flex:0 0 auto;
   }
   .field input, .field textarea{
-    flex:1;background:transparent;border:0;outline:none;
+    flex:1;width:100%;min-width:0;box-sizing:border-box;
+    background:transparent;border:0;outline:none;
     color:var(--text);font-family:inherit;font-size:1rem;
     padding:14px 14px 14px 0;resize:none;
   }
