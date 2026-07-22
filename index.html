@@ -440,6 +440,52 @@
   }
   .wa-float:hover{transform:scale(1.1);background:var(--wa-hover)}
 
+  /* ---------- LANGUAGE SELECTOR ---------- */
+  .lang-selector{position:relative;display:inline-block}
+  .lang-btn{
+    background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);
+    padding:8px 14px;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;gap:8px;transition:all .2s ease;backdrop-filter:blur(8px);
+  }
+  .lang-btn:hover{background:rgba(255,255,255,.12);border-color:var(--emerald)}
+  .lang-flag{font-size:1.05rem}
+  .lang-code{font-weight:700;font-size:.82rem;letter-spacing:.05em;color:var(--emerald)}
+  .lang-chevron{transition:transform .2s ease}
+  .lang-selector.open .lang-chevron{transform:rotate(180deg)}
+
+  .lang-dropdown{
+    display:none;position:absolute;top:calc(100% + 8px);right:0;
+    background:rgba(17,22,20,.96);backdrop-filter:blur(16px);
+    border:1px solid var(--border);border-radius:12px;padding:6px;min-width:140px;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);z-index:100;flex-direction:column;gap:2px;
+  }
+  .lang-selector.open .lang-dropdown{display:flex}
+  .lang-opt{
+    background:transparent;border:0;color:var(--muted);padding:10px 12px;border-radius:8px;
+    font-size:.88rem;font-weight:500;cursor:pointer;display:flex;align-items:center;
+    gap:10px;width:100%;text-align:left;transition:background .15s ease,color .15s ease;
+  }
+  .lang-opt:hover{background:rgba(52,211,153,.12);color:var(--text)}
+  .lang-opt.active{color:var(--emerald);font-weight:700;background:rgba(52,211,153,.08)}
+
+  .mobile-lang-bar{
+    margin-top:14px;padding-top:16px;border-top:1px solid var(--border);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .mobile-lang-title{font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+  .mobile-lang-opts{display:flex;gap:8px}
+  .mobile-lang-btn{
+    flex:1;background:var(--panel-2);border:1px solid var(--border);color:var(--text);
+    padding:10px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;
+    text-align:center;transition:all .2s ease;
+  }
+  .mobile-lang-btn.active{border-color:var(--emerald);background:rgba(52,211,153,.15);color:var(--emerald)}
+
+  /* Ocultar artefactos nativos de Google Translate */
+  .goog-te-banner-frame, .skiptranslate, #google_translate_element { display: none !important; }
+  body { top: 0px !important; }
+  .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+
   /* footer */
   footer{border-top:1px solid var(--border);padding:40px 0;color:var(--faint);font-size:.85rem}
   .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
@@ -459,26 +505,59 @@
       <img src="logo.png" alt="Alerce Patagón Logo" class="brand-logo">
     </a>
     <div class="nav-links">
-      <a href="#ubicacion">Ubicación</a>
-      <a href="#naturaleza">Naturaleza</a>
-      <a href="#masterplan">Masterplan 360°</a>
-      <a href="#llegar">Cómo llegar</a>
-      <a href="#proceso">Proceso</a>
-      <a href="#faq">Preguntas</a>
+      <a href="#ubicacion" data-i18n="nav_location">Ubicación</a>
+      <a href="#naturaleza" data-i18n="nav_nature">Naturaleza</a>
+      <a href="#masterplan" data-i18n="nav_masterplan">Masterplan 360°</a>
+      <a href="#llegar" data-i18n="nav_route">Cómo llegar</a>
+      <a href="#proceso" data-i18n="nav_process">Proceso</a>
+      <a href="#faq" data-i18n="nav_faq">Preguntas</a>
     </div>
-    <a href="#contacto" class="nav-cta">Contacto</a>
-    <button class="mobile-toggle" id="menuToggle" aria-label="Abrir Menú">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-    </button>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <!-- Selector de Idioma Glassmorphism -->
+      <div class="lang-selector">
+        <button class="lang-btn" id="langBtn" type="button" aria-label="Seleccionar idioma / Select language">
+          <span class="lang-flag" id="currentFlag">🇨🇱</span>
+          <span class="lang-code" id="currentLang">ES</span>
+          <svg class="lang-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button type="button" class="lang-opt active" onclick="setLanguage('es')" data-lang="es">
+            <span class="flag">🇨🇱</span>
+            <span>Español</span>
+          </button>
+          <button type="button" class="lang-opt" onclick="setLanguage('en')" data-lang="en">
+            <span class="flag">🇺🇸</span>
+            <span>English</span>
+          </button>
+          <button type="button" class="lang-opt" onclick="setLanguage('de')" data-lang="de">
+            <span class="flag">🇩🇪</span>
+            <span>Deutsch</span>
+          </button>
+        </div>
+      </div>
+      <a href="#contacto" class="nav-cta" data-i18n="nav_contact">Contacto</a>
+      <button class="mobile-toggle" id="menuToggle" aria-label="Abrir Menú">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#ubicacion" onclick="closeMenu()">Ubicación</a>
-    <a href="#naturaleza" onclick="closeMenu()">Naturaleza</a>
-    <a href="#masterplan" onclick="closeMenu()">Masterplan 360°</a>
-    <a href="#llegar" onclick="closeMenu()">Cómo llegar</a>
-    <a href="#proceso" onclick="closeMenu()">Proceso</a>
-    <a href="#faq" onclick="closeMenu()">Preguntas</a>
-    <a href="#contacto" class="nav-cta" onclick="closeMenu()" style="text-align:center;margin-top:10px">Contacto</a>
+    <a href="#ubicacion" onclick="closeMenu()" data-i18n="nav_location">Ubicación</a>
+    <a href="#naturaleza" onclick="closeMenu()" data-i18n="nav_nature">Naturaleza</a>
+    <a href="#masterplan" onclick="closeMenu()" data-i18n="nav_masterplan">Masterplan 360°</a>
+    <a href="#llegar" onclick="closeMenu()" data-i18n="nav_route">Cómo llegar</a>
+    <a href="#proceso" onclick="closeMenu()" data-i18n="nav_process">Proceso</a>
+    <a href="#faq" onclick="closeMenu()" data-i18n="nav_faq">Preguntas</a>
+    <a href="#contacto" class="nav-cta" onclick="closeMenu()" style="text-align:center;margin-top:10px" data-i18n="nav_contact">Contacto</a>
+    
+    <div class="mobile-lang-bar">
+      <span class="mobile-lang-title" data-i18n="lang_title">Idioma / Language</span>
+      <div class="mobile-lang-opts">
+        <button type="button" class="mobile-lang-btn active" onclick="setLanguage('es')" data-lang="es">🇨🇱 ES</button>
+        <button type="button" class="mobile-lang-btn" onclick="setLanguage('en')" data-lang="en">🇺🇸 EN</button>
+        <button type="button" class="mobile-lang-btn" onclick="setLanguage('de')" data-lang="de">🇩🇪 DE</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -488,19 +567,19 @@
     <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1920&q=80" alt="Bosque siempreverde de la Patagonia chilena">
   </div>
   <div class="wrap hero-inner">
-    <p class="eyebrow">Patagonia Norte · Región de Los Lagos</p>
-    <h1>Tu refugio en la Patagonia<br>comienza aquí</h1>
-    <p class="lead">Imagina despertar rodeado de bosque nativo, aire puro y el silencio del sur de Chile. Alerce Patagón es tu oportunidad de adquirir una parcela de agrado en uno de los últimos paraíso vírgenes de la Patagonia.</p>
+    <p class="eyebrow" data-i18n="hero_eyebrow">Patagonia Norte · Región de Los Lagos</p>
+    <h1 data-i18n="hero_title">Tu refugio en la Patagonia<br>comienza aquí</h1>
+    <p class="lead" data-i18n="hero_lead">Imagina despertar rodeado de bosque nativo, aire puro y el silencio del sur de Chile. Alerce Patagón es tu oportunidad de adquirir una parcela de agrado en uno de los últimos paraíso vírgenes de la Patagonia.</p>
     <div class="hero-cta">
-      <a href="#contacto" class="btn btn-primary">Consultar parcelas
+      <a href="#contacto" class="btn btn-primary" data-i18n="hero_cta_primary">Consultar parcelas
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
-      <a href="#ubicacion" class="btn btn-ghost">Conocer el proyecto</a>
+      <a href="#ubicacion" class="btn btn-ghost" data-i18n="hero_cta_secondary">Conocer el proyecto</a>
     </div>
     <div class="stats">
-      <div class="stat"><b>23</b><span>lotes exclusivos</span></div>
-      <div class="stat"><b>5.000 m² – 2 ha</b><span>parcelas de agrado</span></div>
-      <div class="stat"><b>72 km</b><span>de Puerto Montt</span></div>
+      <div class="stat"><b data-i18n="stat_1_val">23</b><span data-i18n="stat_1_lbl">lotes exclusivos</span></div>
+      <div class="stat"><b data-i18n="stat_2_val">5.000 m² – 2 ha</b><span data-i18n="stat_2_lbl">parcelas de agrado</span></div>
+      <div class="stat"><b data-i18n="stat_3_val">72 km</b><span data-i18n="stat_3_lbl">de Puerto Montt</span></div>
     </div>
   </div>
 </header>
@@ -508,9 +587,9 @@
 <!-- ===================== MANIFIESTO / CONSERVACIÓN ===================== -->
 <section id="manifiesto" class="bg-alt">
   <div class="wrap">
-    <p class="eyebrow">Naturaleza que se protege, no se explota</p>
-    <h2 class="section-title">Un legado que se conserva.</h2>
-    <p class="lead">Nuestro bosque nativo está resguardado por un plan de manejo forestal aprobado por la Corporación Nacional Forestal (CONAF). Invertir aquí es ser parte de su conservación.</p>
+    <p class="eyebrow" data-i18n="manifiesto_eyebrow">Naturaleza que se protege, no se explota</p>
+    <h2 class="section-title" data-i18n="manifiesto_title">Un legado que se conserva.</h2>
+    <p class="lead" data-i18n="manifiesto_lead">Nuestro bosque nativo está resguardado por un plan de manejo forestal aprobado por la Corporación Nacional Forestal (CONAF). Invertir aquí es ser parte de su conservación.</p>
     <div class="cards">
       <div class="card">
         <div class="k"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -536,8 +615,8 @@
   <div class="wrap">
     <div class="split">
       <div class="col-text">
-        <p class="eyebrow">Ubicación & Acceso</p>
-        <h2 class="section-title">Donde comienza la Patagonia austral.</h2>
+        <p class="eyebrow" data-i18n="ubicacion_eyebrow">Ubicación & Acceso</p>
+        <h2 class="section-title" data-i18n="ubicacion_title">Donde comienza la Patagonia austral.</h2>
         <p class="lead">En plena Región de Los Lagos, comuna de Hualaihué, sector Quildaco, Alerce Patagón te abre las puertas al inicio de la mítica Patagonia chilena. A solo 72 km de Puerto Montt, llegas recorriendo uno de los trayectos más hermosos del país: el tramo inicial de la Carretera Austral y la ruta costera hacia Hornopirén, entre bosques, mar y montaña.</p>
       </div>
       <div class="col-media">
@@ -841,8 +920,9 @@
   </div>
 </footer>
 
-<!-- ===================== JAVASCRIPT ===================== -->
-<script>
+<!-- ===================== JAVASCRIPT & SISTEMA DE TRADUCCIÓN ===================== -->
+<div id="google_translate_element" style="display:none;"></div>
+<script type="text/javascript">
   // Toggle Menú Móvil
   var menuToggle = document.getElementById('menuToggle');
   var mobileMenu = document.getElementById('mobileMenu');
@@ -889,7 +969,7 @@
     });
   }
 
-  // Resguardo local de lead en LocalStorage antes del envío por FormSubmit
+  // Resguardo local de lead en LocalStorage
   var contactForm = document.getElementById('contactForm');
   if(contactForm){
     contactForm.addEventListener('submit', function(){
@@ -910,6 +990,212 @@
       }
     });
   }
+
+  /* ---------- DICCIONARIO Y MOTOR DE TRADUCCIÓN MULTINIVEL (ES / EN / DE) ---------- */
+  var I18N_DICT = {
+    es: {
+      nav_location: "Ubicación",
+      nav_nature: "Naturaleza",
+      nav_masterplan: "Masterplan 360°",
+      nav_route: "Cómo llegar",
+      nav_process: "Proceso",
+      nav_faq: "Preguntas",
+      nav_contact: "Contacto",
+      hero_eyebrow: "Patagonia Norte · Región de Los Lagos",
+      hero_title: "Tu refugio en la Patagonia<br>comienza aquí",
+      hero_lead: "Imagina despertar rodeado de bosque nativo, aire puro y el silencio del sur de Chile. Alerce Patagón es tu oportunidad de adquirir una parcela de agrado en uno de los últimos paraíso vírgenes de la Patagonia.",
+      hero_cta_primary: "Consultar parcelas",
+      hero_cta_secondary: "Conocer el proyecto",
+      stat_1_val: "23", stat_1_lbl: "lotes exclusivos",
+      stat_2_val: "5.000 m² – 2 ha", stat_2_lbl: "parcelas de agrado",
+      stat_3_val: "72 km", stat_3_lbl: "de Puerto Montt",
+      manifiesto_eyebrow: "Naturaleza que se protege, no se explota",
+      manifiesto_title: "Un legado que se conserva.",
+      manifiesto_lead: "Nuestro bosque nativo está resguardado por un plan de manejo forestal aprobado por la Corporación Nacional Forestal (CONAF). Invertir aquí es ser parte de su conservación.",
+      ubicacion_eyebrow: "Ubicación & Acceso",
+      ubicacion_title: "Donde comienza la Patagonia austral.",
+      masterplan_eyebrow: "Recorrido Virtual · 360°",
+      masterplan_title: "Masterplan 360°",
+      naturaleza_eyebrow: "Naturaleza en estado puro",
+      naturaleza_title: "Libres de intervención.",
+      llegar_eyebrow: "Cómo llegar — En auto",
+      llegar_title: "El camino también es el destino.",
+      proceso_eyebrow: "Ruta de adquisición segura",
+      proceso_title: "Comprar es más simple de lo que imaginas.",
+      faq_eyebrow: "Preguntas Frecuentes",
+      faq_title: "Resolvemos tus dudas.",
+      contact_eyebrow: "— Suite de Contacto Oficial",
+      contact_title: "Diseñemos su legado.",
+      contact_subtitle: "Complete sus datos y un asesor se contactará a la brevedad para orientarle sobre las parcelas disponibles en la Patagonia.",
+      video_btn: "Deseo agendar reunión por videollamada",
+      submit_btn: "Enviar solicitud",
+      wa_title: "Escríbenos por WhatsApp",
+      wa_btn: "Chatear por WhatsApp",
+      lang_title: "Idioma / Language"
+    },
+    en: {
+      nav_location: "Location",
+      nav_nature: "Nature",
+      nav_masterplan: "Masterplan 360°",
+      nav_route: "Directions",
+      nav_process: "Buying Process",
+      nav_faq: "FAQs",
+      nav_contact: "Contact Us",
+      hero_eyebrow: "Northern Patagonia · Los Lagos Region",
+      hero_title: "Your private sanctuary in Patagonia<br>starts here",
+      hero_lead: "Imagine waking up surrounded by native rainforest, crisp pure air, and the peaceful silence of southern Chile. Alerce Patagón is your opportunity to own a private land plot in one of Patagonia's last virgin paradises.",
+      hero_cta_primary: "Inquire Plots",
+      hero_cta_secondary: "Explore Project",
+      stat_1_val: "23", stat_1_lbl: "exclusive plots",
+      stat_2_val: "5,000 m² – 2 ha", stat_2_lbl: "private land plots",
+      stat_3_val: "72 km", stat_3_lbl: "from Puerto Montt",
+      manifiesto_eyebrow: "Nature protected, never exploited",
+      manifiesto_title: "A legacy preserved.",
+      manifiesto_lead: "Our native rainforest is protected under an official forestry management plan approved by CONAF. Investing here means participating directly in its conservation.",
+      ubicacion_eyebrow: "Location & Access",
+      ubicacion_title: "Where Southern Patagonia Begins.",
+      masterplan_eyebrow: "Virtual Tour · 360°",
+      masterplan_title: "360° Masterplan",
+      naturaleza_eyebrow: "Pure Untouched Nature",
+      naturaleza_title: "Free of intervention.",
+      llegar_eyebrow: "How to arrive — By car",
+      llegar_title: "The journey is part of the destination.",
+      proceso_eyebrow: "Secure Acquisition Path",
+      proceso_title: "Buying land is simpler than you imagine.",
+      faq_eyebrow: "Frequently Asked Questions",
+      faq_title: "We answer your questions.",
+      contact_eyebrow: "— Official Contact Suite",
+      contact_title: "Design Your Legacy.",
+      contact_subtitle: "Fill out your details and a personal advisor will reach out promptly to guide you on available land plots in Patagonia.",
+      video_btn: "Schedule a Video Call Meeting",
+      submit_btn: "Submit Request",
+      wa_title: "Chat with Us on WhatsApp",
+      wa_btn: "Chat on WhatsApp",
+      lang_title: "Language"
+    },
+    de: {
+      nav_location: "Standort",
+      nav_nature: "Natur",
+      nav_masterplan: "Masterplan 360°",
+      nav_route: "Anreise",
+      nav_process: "Kaufabwicklung",
+      nav_faq: "Häufige Fragen",
+      nav_contact: "Kontakt",
+      hero_eyebrow: "Nordpatagonien · Region Los Lagos",
+      hero_title: "Ihr Zufluchtsort in Patagonien<br>beginnt hier",
+      hero_lead: "Stellen Sie sich vor, umgeben von einheimischem Regenwald, purest Luft und der Stille Südchiles aufzuwachen. Alerce Patagón ist Ihre Chance, ein exklusives Grundstück in einem der letzten unberührten Paradiese Patagoniens zu erwerben.",
+      hero_cta_primary: "Grundstücke anfragen",
+      hero_cta_secondary: "Projekt entdecken",
+      stat_1_val: "23", stat_1_lbl: "exklusive Grundstücke",
+      stat_2_val: "5.000 m² – 2 ha", stat_2_lbl: "Privatgrundstücke",
+      stat_3_val: "72 km", stat_3_lbl: "von Puerto Montt",
+      manifiesto_eyebrow: "Geschützte Natur, keine Ausbeutung",
+      manifiesto_title: "Ein Erbe, das bewahrt wird.",
+      manifiesto_lead: "Unser einheimischer Regenwald ist durch einen offiziellen Forstmanagementplan der CONAF geschützt. Hier zu investieren bedeutet, aktiv zu seinem Schutz beizutragen.",
+      ubicacion_eyebrow: "Standort & Anreise",
+      ubicacion_title: "Wo das südliche Patagonien beginnt.",
+      masterplan_eyebrow: "Virtuelle Tour · 360°",
+      masterplan_title: "360° Masterplan",
+      naturaleza_eyebrow: "Unberührte Natur",
+      naturaleza_title: "Frei von Eingriffen.",
+      llegar_eyebrow: "Anreise — Mit dem Auto",
+      llegar_title: "Der Weg ist Teil des Ziels.",
+      proceso_eyebrow: "Sicherer Kaufprozess",
+      proceso_title: "Grundstückskauf ist einfacher als Sie denken.",
+      faq_eyebrow: "Häufig gestellte Fragen",
+      faq_title: "Wir beantworten Ihre Fragen.",
+      contact_eyebrow: "— Offizielle Kontakt-Suite",
+      contact_title: "Gestalten Sie Ihr Erbe.",
+      contact_subtitle: "Füllen Sie Ihre Daten aus und ein Berater wird Sie umgehend kontaktieren, um Sie über verfügbare Grundstücke in Patagonien zu informieren.",
+      video_btn: "Videocall-Meeting vereinbaren",
+      submit_btn: "Anfrage absenden",
+      wa_title: "Schreiben Sie uns per WhatsApp",
+      wa_btn: "Per WhatsApp chatten",
+      lang_title: "Sprache"
+    }
+  };
+
+  function applyTranslations(lang) {
+    var dict = I18N_DICT[lang] || I18N_DICT.es;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key]) {
+        if(el.children.length > 0 && el.querySelector('svg')) {
+          var svg = el.querySelector('svg').outerHTML;
+          el.innerHTML = dict[key] + ' ' + svg;
+        } else {
+          el.innerHTML = dict[key];
+        }
+      }
+    });
+  }
+
+  function applyGoogleTranslate(lang) {
+    var targetLang = (lang === 'es') ? 'es' : (lang === 'de' ? 'de' : 'en');
+    var domain = window.location.hostname;
+    document.cookie = "googtrans=/es/" + targetLang + "; path=/; domain=" + domain;
+    document.cookie = "googtrans=/es/" + targetLang + "; path=/;";
+
+    var combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.value = targetLang;
+      combo.dispatchEvent(new Event('change'));
+    }
+  }
+
+  function setLanguage(lang) {
+    var flags = { es: '🇨🇱', en: '🇺🇸', de: '🇩🇪' };
+    var codes = { es: 'ES', en: 'EN', de: 'DE' };
+
+    var flagEl = document.getElementById('currentFlag');
+    var codeEl = document.getElementById('currentLang');
+    if(flagEl) flagEl.textContent = flags[lang] || '🇨🇱';
+    if(codeEl) codeEl.textContent = codes[lang] || 'ES';
+
+    document.querySelectorAll('.lang-opt, .mobile-lang-btn').forEach(function(el){
+      if(el.getAttribute('data-lang') === lang) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
+
+    localStorage.setItem('site_lang', lang);
+    applyTranslations(lang);
+    applyGoogleTranslate(lang);
+
+    var selector = document.querySelector('.lang-selector');
+    if(selector) selector.classList.remove('open');
+  }
+
+  // Event Listeners Selector Idioma
+  document.addEventListener('DOMContentLoaded', function(){
+    var langBtn = document.getElementById('langBtn');
+    var selector = document.querySelector('.lang-selector');
+    if(langBtn && selector){
+      langBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        selector.classList.toggle('open');
+      });
+      document.addEventListener('click', function(){
+        selector.classList.remove('open');
+      });
+    }
+
+    var savedLang = localStorage.getItem('site_lang');
+    if(savedLang && savedLang !== 'es'){
+      setLanguage(savedLang);
+    }
+  });
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'es',
+      includedLanguages: 'en,de,es',
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
 </script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
